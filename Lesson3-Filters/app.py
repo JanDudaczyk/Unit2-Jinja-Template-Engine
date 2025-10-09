@@ -78,5 +78,6 @@ def statistics():
       "females" : females,
     }
     return render_template('stats.html', **data)
+
 if __name__ == '__main__':
     app.run(debug=True)
