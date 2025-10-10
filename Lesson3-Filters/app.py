@@ -52,20 +52,18 @@ def home():
 def roster():
     students = read_roster()
     return render_template('roster.html', students=students)
-if __name__ == '__main__':
-    app.run(debug=True)
 
 @app.route('/stats')
 def statistics():
     students = read_roster()
     #Calculate Statistics
-    total = len(statistics)
-    seniors = [s for s in students if s['Grade'] == 12]
-    juniors = [s for s in students if s['Grade'] == 11]
-    sophmores = [s for s in students if s['Grade'] == 10]
-    freshman = [s for s in students if s['Grade'] == 9]
-    males = [s for s in students if s['Gender' == 'M']]
-    females = [s for s in students if s['Gender' == 'F']]
+    total = len(students)
+    seniors = [s for s in students if s['Grade'] == '12']
+    juniors = [s for s in students if s['Grade'] == '11']
+    sophmores = [s for s in students if s['Grade'] == '10']
+    freshman = [s for s in students if s['Grade'] == '9']
+    males = [s for s in students if s['Gender'] == 'M']
+    females = [s for s in students if s['Gender'] == 'F']
     
     data = {
       "students" : students,
