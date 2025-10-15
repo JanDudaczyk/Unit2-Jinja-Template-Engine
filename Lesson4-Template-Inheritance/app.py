@@ -2,7 +2,7 @@ from flask import Flask, render_template
 import csv
 app = Flask(__name__)
 
-#Function to read/import csv to list of dicts
+# Function to read/import csv to list of dicts
 def read_roster():
     students = []
     with open('roster.csv', 'r') as file:
@@ -42,7 +42,7 @@ def home():
         <body>
             <h1>Class Roster Application</h1>
             <p>View the student roster for Advanced Programming</p>
-            <a href="/roster">🧑‍🤝‍🧑View Roster</a>
+            <a href="/roster">👥View Roster</a>
             <a href="/stats">📊View Stats</a>
         </body>
     </html>
@@ -51,31 +51,41 @@ def home():
 @app.route('/roster')
 def roster():
     students = read_roster()
-    return render_template('roster.html', students=students)
+    # print(students)
+    return render_template('roster.html', students=students)   
 
-@app.route('/stats')
+@app.route('/stats', methods=['GET'])
 def statistics():
     students = read_roster()
-    #Calculate Statistics
+    # Calculate statistics
     total = len(students)
     seniors = [s for s in students if s['Grade'] == '12']
     juniors = [s for s in students if s['Grade'] == '11']
-    sophmores = [s for s in students if s['Grade'] == '10']
-    freshman = [s for s in students if s['Grade'] == '9']
+    sophomores = [s for s in students if s['Grade'] == '10']
+    freshmen = [s for s in students if s['Grade'] == '9']
     males = [s for s in students if s['Gender'] == 'M']
     females = [s for s in students if s['Gender'] == 'F']
     
     data = {
-      "students" : students,
-      "total" : total, 
-      "seniors" : seniors,
-      "juniors" : juniors,
-      "sophomores" : sophmores,
-      "freshman" : freshman,
-      "males" : males, 
-      "females" : females,
+    "students": students,
+    "total": total,
+    "seniors": seniors,
+    "juniors": juniors,
+    "sophomores": sophomores,
+    "freshmen": freshmen,
+    "males": males,
+    "females": females
     }
     return render_template('stats.html', **data)
 
+
+@app.route('/student/<int:student_id>')
+def student_detail(student_id):
+    """Show the details of a specific student"""
+    students = read_roster()
+    # Find student by ID (ID is indexed in CSV)
+    if 0 <=student_id <= len(students):
+        student = students[student_id - 1]
+        return render_template('student_detail.html', student=student)
 if __name__ == '__main__':
     app.run(debug=True)
